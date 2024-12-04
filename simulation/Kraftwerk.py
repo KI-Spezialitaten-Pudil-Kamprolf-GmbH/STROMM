@@ -1,5 +1,7 @@
 from enum import Enum
+from typing import override
 import random
+
 
 
 class KraftwerkStatus(Enum):
@@ -25,15 +27,9 @@ class Kraftwerk:
     def get_leistung(self):
         return self.status_map[self.status]
 
-class Kohlekraftwerk(Kraftwerk):
-    def __init__(self):
-        print("Kohle-KW erstellt")
-
 class Windpark(Kraftwerk):
+    @override
     def set_status(self, neuer_status):
         if (neuer_status not in {KraftwerkStatus.SHUTDOWN, KraftwerkStatus.MAX_POWER}):
             raise AttributeError("Windpark unterstützt folgende Modi: SHUTDOWN, MAX_POWER")
         self.status = neuer_status
-    
-
-    
