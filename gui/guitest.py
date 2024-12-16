@@ -1,9 +1,10 @@
+from typing import override
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QLineEdit, QVBoxLayout, QWidget
-
-import sys
+from PyQt5 import QtCore
 
 
 GUI_APP_VERSION_STR = "2024.12A"
+GUI_TITLE = "KI-PK NN for Energy Infrastructure Management ver. " + GUI_APP_VERSION_STR
 
 GUI_WINDOW_WIDTH = 500
 GUI_WINDOW_HEIGHT = 400
@@ -16,45 +17,43 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle(title)
         self.setFixedSize(GUI_WINDOW_WIDTH, GUI_WINDOW_HEIGHT)
+        self.setMouseTracking(True)
 
         # Initialize window elements
-        self.button = QPushButton("Test button")
-        self.button.setFixedSize(100, 40)
-        self.button.setCheckable(True)
-        self.button.pressed.connect(self.event_button_clicked)
-
-        self.label = QLabel("Button pressed: " + str(self.clickCount) + " times")
+        self.label = QLabel("")
         self.label.setFixedSize(100, 40)
-
-        self.input = QLineEdit("")
-        self.input.setFixedSize(200, 40)
-        self.input.textChanged.connect(self.event_input_textChanged)
 
         # Set layout
         layout = QVBoxLayout()
         layout.setContentsMargins(20, 20, 20, 20)
-        layout.addWidget(self.button)
         layout.addWidget(self.label)
-        layout.addWidget(self.input)
         container = QWidget()
         container.setLayout(layout)
+        container.setMouseTracking(True)
 
         self.setCentralWidget(container)
 
     def event_button_clicked(self):
         self.clickCount += 1
         self.label.setText(self.input.text() + " " + str(self.clickCount))
+    
+    @override
+    def mouseMoveEvent(self, event):
+        pos = event.pos()
+        self.label.setText("X: " + str(pos.x()) + ", Y: " + str(pos.y()))
+        return super().mouseMoveEvent(event)
 
-    def event_input_textChanged(self):
-        self.label.setText(self.input.text() + " " + str(self.clickCount))
 
-# QApplication nimmt Argumente als Parameter:
-# Entweder sys.argv für Programmparameter oder [] für leere Liste
-app = QApplication([])
+if __name__ == "__main__":
+    import sys
 
-print("Initializing main GUI.")
-window = MainWindow("KI-PK NN for Energy infrastructure management Ver. " + GUI_APP_VERSION_STR)
-# TODO: Set Window title here somehow
-window.show()
+    # QApplication nimmt Argumente als Parameter:
+    # Entweder sys.argv für Programmparameter oder [] für leere Liste
+    app = QApplication([])
 
-app.exec()
+    print("Initializing main GUI.")
+    window = MainWindow(GUI_TITLE)
+    # TODO: Set Window title here somehow
+    window.show()
+
+    app.exec()
