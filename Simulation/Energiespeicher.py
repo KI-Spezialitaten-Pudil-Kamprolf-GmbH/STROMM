@@ -7,12 +7,13 @@ class Energiespeicher:
     gespeichert = 0
     ladeverlust_anteil = 0.0
     entladeverlust_anteil = 0.0
-    def __init__(self, kapazitaet, ladeverlust_anteil, entladeverlust_anteil):
+
+    def __init__(self, kapazitaet, gespeichert, ladeverlust_anteil, entladeverlust_anteil):
         self.kapazitaet = kapazitaet
-        self.gespeichert = 0
+        self.gespeichert = gespeichert
         self.ladeverlust_anteil = ladeverlust_anteil
         self.entladeverlust_anteil = entladeverlust_anteil
-    
+
     # Return: Menge an Energie, die nicht gespeichert werden konnte
     def speichern(self, neuaufnahme):
         freie_kapazitaet = self.kapazitaet - self.gespeichert
@@ -25,8 +26,8 @@ class Energiespeicher:
         else:
             self.gespeichert += neuaufnahme_mit_verlust
             return 0
-    
-    # Return: Menge an Energie, die entladen wurde
+
+# Return: Menge an Energie, die entladen wurde
     def entladen(self, angefragte_menge):
         # Entladbar: Menge an Energie, die für den Verbraucher aus dem Speicher verfügbar ist
         entladbar = self.gespeichert * (1.0 - self.entladeverlust_anteil)
@@ -39,4 +40,4 @@ class Energiespeicher:
             return angefragte_menge - entladbar
         else:
             self.gespeichert -= entleerung
-            return angefragte_menge
+            return 0
