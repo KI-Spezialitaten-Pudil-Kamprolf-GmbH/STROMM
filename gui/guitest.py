@@ -1,6 +1,7 @@
 from typing import override
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QLineEdit, QVBoxLayout, QWidget
 from PyQt5 import QtCore
+from PyQt5.QtGui import QPixmap
 
 
 GUI_APP_VERSION_STR = "2024.12A"
@@ -31,7 +32,13 @@ class MainWindow(QMainWindow):
         container.setLayout(layout)
         container.setMouseTracking(True)
 
-        self.setCentralWidget(container)
+        self.label2 = QLabel()
+        self.img = QPixmap("C:\\Users\\Theophil\\Downloads\\RDT_20250115_1425031785123197527477889.jpg")
+        self.img = self.img.scaledToWidth(500)#.scaledToHeight(400)
+        self.label2.setPixmap(self.img)
+
+        self.setCentralWidget(self.label2)
+        #self.setCentralWidget(container)
 
     def event_button_clicked(self):
         self.clickCount += 1
@@ -40,8 +47,12 @@ class MainWindow(QMainWindow):
     @override
     def mouseMoveEvent(self, event):
         pos = event.pos()
-        self.label.setText("X: " + str(pos.x()) + ", Y: " + str(pos.y()))
-        return super().mouseMoveEvent(event)
+        relX = pos.x() / self.width()
+        relY = pos.y() / self.height()
+        self.label.setText("X: " + str(relX) + ", Y: " + str(relY))
+        self.img.scaledToHeight(500*relY)
+        event.accept()
+        # return super().mouseMoveEvent(event)
 
 
 if __name__ == "__main__":
@@ -53,7 +64,6 @@ if __name__ == "__main__":
 
     print("Initializing main GUI.")
     window = MainWindow(GUI_TITLE)
-    # TODO: Set Window title here somehow
     window.show()
 
     app.exec()
