@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QLin
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap
 
+# TODO: QThread für GUI-Update während Hintergrundberechnung
 
 GUI_APP_VERSION_STR = "2024.12A"
 GUI_TITLE = "KI-PK NN for Energy Infrastructure Management ver. " + GUI_APP_VERSION_STR
