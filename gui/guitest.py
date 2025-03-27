@@ -1,12 +1,13 @@
 from typing import override
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QLineEdit, QVBoxLayout, QWidget
 from PyQt5 import QtCore
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPixmap, QPainter, QBrush, QPen
 
 # TODO: QThread für GUI-Update während Hintergrundberechnung
 
-GUI_APP_VERSION_STR = "2024.12A"
-GUI_TITLE = "KI-PK NN for Energy Infrastructure Management ver. " + GUI_APP_VERSION_STR
+GUI_VERSION_STR = "2025.3A"
+GUI_TITLE = "KI-PK NN for Energy Infrastructure Management ver. " + GUI_VERSION_STR
 
 GUI_WINDOW_WIDTH = 500
 GUI_WINDOW_HEIGHT = 400
@@ -18,9 +19,16 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle(title)
-        self.setFixedSize(GUI_WINDOW_WIDTH, GUI_WINDOW_HEIGHT)
+        self.top = 0
+        self.left = 0
+        self.width = GUI_WINDOW_WIDTH
+        self.height = GUI_WINDOW_HEIGHT
+        self.setGeometry(self.top, self.left, self.width, self.height)
         self.setMouseTracking(True)
 
+        self.INIT_GUI_ELEMENTS()
+
+    def INIT_GUI_ELEMENTS(self):
         # Initialize window elements
         self.label = QLabel("")
         self.label.setFixedSize(100, 40)
@@ -31,30 +39,14 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.label)
         container = QWidget()
         container.setLayout(layout)
-        container.setMouseTracking(True)
-
-        self.label2 = QLabel()
-        self.img = QPixmap("C:\\Users\\Theophil\\Downloads\\RDT_20250115_1425031785123197527477889.jpg")
-        self.img = self.img.scaledToWidth(500)#.scaledToHeight(400)
-        self.label2.setPixmap(self.img)
-
-        self.setCentralWidget(self.label2)
         #self.setCentralWidget(container)
-
-    def event_button_clicked(self):
-        self.clickCount += 1
-        self.label.setText(self.input.text() + " " + str(self.clickCount))
+        return
     
     @override
-    def mouseMoveEvent(self, event):
-        pos = event.pos()
-        relX = pos.x() / self.width()
-        relY = pos.y() / self.height()
-        self.label.setText("X: " + str(relX) + ", Y: " + str(relY))
-        self.img.scaledToHeight(500*relY)
-        event.accept()
-        # return super().mouseMoveEvent(event)
-
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setPen(QPen(Qt.green,  8, Qt.DashLine))
+        painter.drawEllipse(40, 40, 400, 400)
 
 if __name__ == "__main__":
     import sys
