@@ -64,7 +64,7 @@ if __name__ == "__main__":
         # .ist_an wurde in grid_components.py zu ist_an
         print(f"{kw.name} ({kw.kraftwerkstyp}): {'Eingeschaltet' if kw.ist_an else 'Ausgeschaltet'}, Kapazität: {kw.kapazitaet_mw} MW")
     print(f"Initialer Batteriestand: {batterie.aktueller_fuellstand_mwh:.2f} MWh")
-    print(f"Initiales Wetter: {stromnetz.weather_simulator.lese_aktuelle_wetterbeschreibung()}")
+    print(f"Initiales Wetter: {stromnetz.wetter_simulator.lese_aktuelle_wetterbeschreibung()}")
     print("-" * 40)
 
     # 4. Simulation für 24 Zeitschritte
@@ -76,13 +76,13 @@ if __name__ == "__main__":
         prognostizierter_gesamtbedarf = aktueller_stadt_bedarf + aktueller_industrie_bedarf
 
         if stromnetz.aktueller_zeitschritt == 0:
-            print(f"Wetter für bevorstehenden Schritt (Initial): {stromnetz.weather_simulator.lese_aktuelle_wetterbeschreibung()}")
-            kommender_solarfaktor = stromnetz.weather_simulator.lese_solar_ausgabefaktor(1)
-            kommender_windfaktor = stromnetz.weather_simulator.lese_wind_ausgabefaktor()
+            print(f"Wetter für bevorstehenden Schritt (Initial): {stromnetz.wetter_simulator.lese_aktuelle_wetterbeschreibung()}")
+            kommender_solarfaktor = stromnetz.wetter_simulator.lese_solar_ausgabefaktor(1)
+            kommender_windfaktor = stromnetz.wetter_simulator.lese_wind_ausgabefaktor()
         else:
-            print(f"Wetter für bevorstehenden Schritt: {stromnetz.weather_simulator.lese_aktuelle_wetterbeschreibung()}")
-            kommender_solarfaktor = stromnetz.weather_simulator.lese_solar_ausgabefaktor(stromnetz.aktueller_zeitschritt + 1)
-            kommender_windfaktor = stromnetz.weather_simulator.lese_wind_ausgabefaktor()
+            print(f"Wetter für bevorstehenden Schritt: {stromnetz.wetter_simulator.lese_aktuelle_wetterbeschreibung()}")
+            kommender_solarfaktor = stromnetz.wetter_simulator.lese_solar_ausgabefaktor(stromnetz.aktueller_zeitschritt + 1)
+            kommender_windfaktor = stromnetz.wetter_simulator.lese_wind_ausgabefaktor()
 
         potenzielle_erneuerbare_erzeugung = 0
         initiale_online_erneuerbare_kapazitaet = 0
@@ -110,7 +110,7 @@ if __name__ == "__main__":
         status = stromnetz.lese_netzzustand()
 
         print(f"--- Netzzustand nach Schritt {status['zeitschritt']} ---")
-        print(f"Wetter während Schritt {status['zeitschritt']}: {stromnetz.weather_simulator.lese_aktuelle_wetterbeschreibung()}")
+        print(f"Wetter während Schritt {status['zeitschritt']}: {stromnetz.wetter_simulator.lese_aktuelle_wetterbeschreibung()}")
 
         # Deutsche Schlüssel aus status direkt verwenden und ggf. lesbarer formatieren
         status_anzeige = {
